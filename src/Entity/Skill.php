@@ -30,9 +30,6 @@ class Skill
     #[ORM\OneToMany(targetEntity: UserSkillWanted::class, mappedBy: 'skill')]
     private Collection $userSkillWanteds;
 
-    #[ORM\Column(length: 255)]
-    private ?string $test = null;
-
     public function __construct()
     {
         $this->userSkillOffereds = new ArrayCollection();

@@ -12,9 +12,7 @@ class SkillType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('label')
-            ->add('test')
-        ;
+            ->add('label');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
