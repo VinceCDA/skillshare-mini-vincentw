@@ -14,10 +14,10 @@ class UserSkillWanted
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'userSkillWanteds')]
-    private ?user $user = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'userSkillWanteds')]
-    private ?skill $skill = null;
+    private ?Skill $skill = null;
 
     public function getId(): ?int
     {
@@ -31,24 +31,24 @@ class UserSkillWanted
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getSkill(): ?skill
+    public function getSkill(): ?Skill
     {
         return $this->skill;
     }
 
-    public function setSkill(?skill $skill): static
+    public function setSkill(?Skill $skill): static
     {
         $this->skill = $skill;
 
