@@ -19,11 +19,17 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ProfileController extends AbstractController
 {
     #[Route(name: 'app_profile_index', methods: ['GET', 'POST'])]
-    public function index(Request $request, SkillRepository $skillRepository): Response
+    public function index(Request $request, SkillRepository $skillRepository, EntityManagerInterface $entityManager): Response
     {
         $userData = $this->getUser();
         $form = $this->createForm(ProfileType::class, $userData);
         $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($userData);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_profile_index', [], Response::HTTP_SEE_OTHER);
+        }
         return $this->render('profile/index.html.twig', [
             'userData' => $userData,
             'form' => $form,
