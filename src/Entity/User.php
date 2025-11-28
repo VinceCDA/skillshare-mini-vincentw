@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -35,6 +37,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    /**
+     * @var Collection<int, UserSkillOffered>
+     */
+    #[ORM\OneToMany(targetEntity: UserSkillOffered::class, mappedBy: 'user')]
+    private Collection $userSkillOffereds;
+
+    /**
+     * @var Collection<int, UserSkillWanted>
+     */
+    #[ORM\OneToMany(targetEntity: UserSkillWanted::class, mappedBy: 'user')]
+    private Collection $userSkillWanteds;
+
+    public function __construct()
+    {
+        $this->userSkillOffereds = new ArrayCollection();
+        $this->userSkillWanteds = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -125,6 +145,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserSkillOffered>
+     */
+    public function getUserSkillOffereds(): Collection
+    {
+        return $this->userSkillOffereds;
+    }
+
+    public function addUserSkillOffered(UserSkillOffered $userSkillOffered): static
+    {
+        if (!$this->userSkillOffereds->contains($userSkillOffered)) {
+            $this->userSkillOffereds->add($userSkillOffered);
+            $userSkillOffered->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserSkillOffered(UserSkillOffered $userSkillOffered): static
+    {
+        if ($this->userSkillOffereds->removeElement($userSkillOffered)) {
+            // set the owning side to null (unless already changed)
+            if ($userSkillOffered->getUser() === $this) {
+                $userSkillOffered->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserSkillWanted>
+     */
+    public function getUserSkillWanteds(): Collection
+    {
+        return $this->userSkillWanteds;
+    }
+
+    public function addUserSkillWanted(UserSkillWanted $userSkillWanted): static
+    {
+        if (!$this->userSkillWanteds->contains($userSkillWanted)) {
+            $this->userSkillWanteds->add($userSkillWanted);
+            $userSkillWanted->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserSkillWanted(UserSkillWanted $userSkillWanted): static
+    {
+        if ($this->userSkillWanteds->removeElement($userSkillWanted)) {
+            // set the owning side to null (unless already changed)
+            if ($userSkillWanted->getUser() === $this) {
+                $userSkillWanted->setUser(null);
+            }
+        }
 
         return $this;
     }
