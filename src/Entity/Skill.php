@@ -122,16 +122,4 @@ class Skill
 
         return $this;
     }
-
-    public function getTest(): ?string
-    {
-        return $this->test;
-    }
-
-    public function setTest(string $test): static
-    {
-        $this->test = $test;
-
-        return $this;
-    }
 }
