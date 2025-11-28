@@ -16,6 +16,7 @@
 			<td>{{ skill.label }}</td>
 			<td>
 				<a href="{{ path('app_profile_skillofferedadd', {'id': skill.id}) }}">ADD</a>
+				<a href="{{ path('app_profile_skillwantedadd', {'id': skill.id}) }}">ADD</a>
 				<a href="{{ path('app_skill_edit', {'id': skill.id}) }}">edit</a>
 			</td>
 		</tr>
@@ -29,6 +30,18 @@
 			<td>{{ skillOffered.skill.label }}</td>
 			<td>
 				<a href="{{ path('app_profile_skilloffereddel', {'id': skillOffered.id}) }}">DELETE</a>
+			</td>
+		</tr>
+	{% else %}
+		<tr>
+			<td colspan="4">no records found</td>
+		</tr>
+	{% endfor %}
+	{% for skillWanted in userData.userSkillWanteds %}
+		<tr>
+			<td>{{ skillWanted.skill.label }}</td>
+			<td>
+				<a href="{{ path('app_profile_skillwanteddel', {'id': skillWanted.id}) }}">DELETE</a>
 			</td>
 		</tr>
 	{% else %}
