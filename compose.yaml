@@ -1,16 +1,15 @@
-version: '3.7'
 services:
     database:
         image: 'mysql:8.0'
         healthcheck:
-            test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER:-root}", "-p${MYSQL_PASSWORD:-password}" ]
+            test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER:-user}", "-p${MYSQL_PASSWORD:-pass}" ]
             interval: 5s
             retries: 5
             start_period: 60s
             timeout: 10s
         environment:
-            MYSQL_ROOT_PASSWORD: password
             MYSQL_DATABASE: main
+        env_file: .env.db.local
         ports:
             # To allow the host machine to access the ports below, modify the lines below.
             # For example, to allow the host to connect to port 3306 on the container, you would change
@@ -23,7 +22,9 @@ services:
                 condition: service_healthy
                 restart: true
         build: .
-        command: sh -c "php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration &&  
-                        apache2-foreground"
+        environment:
+            DATABASE_USER: app
+        env_file: .env.web.local
+        command: sh -c "php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration && apache2-foreground"
         ports:
             - 8080:80
