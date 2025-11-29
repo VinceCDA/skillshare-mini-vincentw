@@ -14,9 +14,9 @@ final class DashBoardController extends AbstractController
     {
         $uri = sprintf('https://api.openweathermap.org/data/2.5/weather?q=Paris&appid=%s&units=metric&lang=fr',  $this->getParameter('app.apikeyweather'));
         $response = $client->request('GET', $uri);
-        dd($response->getContent());
         return $this->render('dash_board/index.html.twig', [
             'controller_name' => 'DashBoardController',
+            'weather' => json_decode($response->getContent()),
         ]);
     }
 }
