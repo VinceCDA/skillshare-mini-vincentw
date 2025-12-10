@@ -17,6 +17,7 @@ services:
             # See https://docs.docker.com/compose/compose-file/compose-file-v3/#ports for more information.
             - '3306'
     web:
+        restart: always
         depends_on:
             database:
                 condition: service_healthy
